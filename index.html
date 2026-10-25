@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>刘松 — 科技艺术 · 生成艺术 · 数字影像</title>
+<style>
+  :root{
+    --paper:#FAFAF7;
+    --ink:#232320;
+    --grey:#8A8A84;
+    --line:#E4E1D8;
+    --accent:#6B7B6E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","SimSun",serif;
+    font-size:16px;line-height:1.9;letter-spacing:.02em;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--ink);color:var(--paper)}
+  a{color:inherit;text-decoration:none}
+  img{display:block;width:100%;height:100%;object-fit:cover}
+
+  /* ---------- 固定导航 ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;height:64px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 clamp(20px,4vw,56px);
+    background:rgba(250,250,247,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-name{font-size:17px;letter-spacing:.4em;font-weight:700}
+  .nav-links{display:flex;gap:clamp(18px,3vw,44px)}
+  .nav-links a{
+    font-size:13px;letter-spacing:.3em;color:var(--grey);
+    padding:4px 0;position:relative;transition:color .4s;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+    background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .4s;
+  }
+  .nav-links a:hover,.nav-links a.active{color:var(--ink)}
+  .nav-links a.active::after,.nav-links a:hover::after{transform:scaleX(1)}
+
+  /* ---------- 首屏 ---------- */
+  header{
+    min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:0 20px;position:relative;
+  }
+  .hero-name{
+    font-size:clamp(84px,17vw,230px);font-weight:400;line-height:1.05;
+    letter-spacing:.22em;text-indent:.22em;
+  }
+  .hero-sub{
+    margin-top:34px;font-size:clamp(12px,1.4vw,15px);
+    letter-spacing:.52em;text-indent:.52em;color:var(--grey);
+  }
+  .hero-line{width:1px;height:72px;background:var(--ink);opacity:.35;margin-top:64px}
+  .hero-hint{margin-top:14px;font-size:11px;letter-spacing:.4em;color:var(--grey)}
+
+  /* ---------- 通用板块 ---------- */
+  section{max-width:1240px;margin:0 auto;padding:clamp(90px,12vh,150px) clamp(20px,5vw,56px)}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:clamp(40px,6vh,72px)}
+  .sec-title{font-size:clamp(26px,3vw,36px);font-weight:400;letter-spacing:.3em}
+  .sec-note{font-size:12px;letter-spacing:.3em;color:var(--grey)}
+
+  /* ---------- 关于我 ---------- */
+  .about-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,88px);align-items:start}
+  .about-photo{aspect-ratio:1/1;overflow:hidden;background:#EFEDE6}
+  .about-photo img{filter:contrast(.97) saturate(.95);transition:transform 1.6s cubic-bezier(.22,1,.36,1)}
+  .about-photo:hover img{transform:scale(1.04)}
+  .photo-cap{margin-top:14px;font-size:12px;letter-spacing:.24em;color:var(--grey)}
+  .about-text p{margin-bottom:1.6em;text-align:justify}
+  .about-text p:last-of-type{margin-bottom:0}
+  .about-meta{
+    margin-top:44px;padding-top:26px;border-top:1px solid var(--line);
+    display:grid;grid-template-columns:auto 1fr;row-gap:10px;column-gap:32px;
+    font-size:13.5px;letter-spacing:.12em;
+  }
+  .about-meta dt{color:var(--grey)}
+  .about-meta dd{letter-spacing:.06em}
+
+  /* ---------- 作品画廊 ---------- */
+  .works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,40px)}
+  .work figure{aspect-ratio:1/1;overflow:hidden;background:#EFEDE6}
+  .work img{transition:transform 1.4s cubic-bezier(.22,1,.36,1);filter:saturate(.82)}
+  .work:hover img{transform:scale(1.07)}
+  .work figcaption{display:flex;justify-content:space-between;align-items:baseline;padding:16px 2px 0;border-top:1px solid var(--line);margin-top:14px;padding-top:14px;border-top:none}
+  .work-title{font-size:15px;letter-spacing:.14em}
+  .work-info{font-size:12px;color:var(--grey);letter-spacing:.1em}
+
+  /* ---------- 展览经历 ---------- */
+  .exh-list{list-style:none}
+  .exh-list li{
+    display:grid;grid-template-columns:110px 1fr auto;gap:24px;align-items:baseline;
+    padding:26px 6px;border-bottom:1px solid var(--line);
+    transition:background .5s,padding-left .5s;
+  }
+  .exh-list li:first-child{border-top:1px solid var(--line)}
+  .exh-list li:hover{background:#F3F1EA;padding-left:16px}
+  .exh-year{font-size:15px;letter-spacing:.2em;color:var(--accent)}
+  .exh-name{font-size:16.5px;letter-spacing:.1em}
+  .exh-name small{font-size:12.5px;color:var(--grey);letter-spacing:.16em;margin-left:14px}
+  .exh-loc{font-size:13px;color:var(--grey);letter-spacing:.14em}
+
+  /* ---------- 页脚 ---------- */
+  footer{border-top:1px solid var(--line)}
+  .foot-inner{max-width:1240px;margin:0 auto;padding:clamp(70px,10vh,120px) clamp(20px,5vw,56px) 56px;text-align:center}
+  .foot-label{font-size:12px;letter-spacing:.5em;text-indent:.5em;color:var(--grey);margin-bottom:26px}
+  .foot-mail{font-size:clamp(22px,3.4vw,40px);letter-spacing:.1em;position:relative;display:inline-block;padding-bottom:6px}
+  .foot-mail::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s}
+  .foot-mail:hover::after{transform:scaleX(1)}
+  .foot-social{display:flex;justify-content:center;gap:clamp(22px,4vw,52px);margin-top:46px}
+  .foot-social a{font-size:13px;letter-spacing:.3em;color:var(--grey);transition:color .4s}
+  .foot-social a:hover{color:var(--ink)}
+  .foot-copy{margin-top:64px;font-size:11.5px;letter-spacing:.28em;color:#B4B2AA}
+
+  /* ---------- 入场动效 ---------- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity 1.1s ease,transform 1.1s cubic-bezier(.22,1,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  }
+
+  /* ---------- 响应式 ---------- */
+  @media(max-width:900px){
+    .about-grid{grid-template-columns:1fr}
+    .about-photo{max-width:420px}
+    .works-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:560px){
+    .nav-links{gap:16px}
+    .nav-links a{letter-spacing:.14em}
+    .works-grid{grid-template-columns:1fr}
+    .exh-list li{grid-template-columns:74px 1fr;row-gap:4px}
+    .exh-loc{grid-column:2}
+  }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-name" href="#top">刘松</a>
+    <div class="nav-links">
+      <a href="#about">关于</a>
+      <a href="#works">作品</a>
+      <a href="#exhibitions">展览</a>
+      <a href="#contact">联系</a>
+    </div>
+  </nav>
+
+  <header id="top">
+    <h1 class="hero-name">刘松</h1>
+    <p class="hero-sub">科技艺术 · 生成艺术 · 数字影像</p>
+    <div class="hero-line"></div>
+    <p class="hero-hint">向下浏览</p>
+  </header>
+
+  <!-- 关于我 -->
+  <section id="about">
+    <div class="sec-head">
+      <h2 class="sec-title">关于我</h2>
+      <span class="sec-note">ABOUT</span>
+    </div>
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="about-photo">
+          <img src="./portrait.jpg" alt="刘松肖像" />
+        </div>
+        <p class="photo-cap">艺术家肖像 · 工作室</p>
+      </div>
+      <div class="about-text reveal">
+        <p>刘松，2007年生于河南商丘，现于天津上学。他的创作围绕科技艺术、生成艺术与工艺美术展开，关注算法、数据与人类感知之间的缝隙，尝试在精确的计算中保留偶然与温度。</p>
+        <p>他习惯从一条极简单的规则出发，让线条、粒子与光在时间里自行生长、偏移与消散。作品大多呈现低饱和的灰与白，以及近乎静止的缓慢节奏——观众看到的不只是结果，而是一个仍在发生的过程。</p>
+        <p>近期的创作延伸至实时影像与空间装置，他试图让机器生成的速度慢下来，使技术显露出安静、迟疑、甚至温柔的一面。</p>
+        <dl class="about-meta">
+          <dt>出生</dt><dd>二零零七 · 河南商丘</dd>
+          <dt>现居</dt><dd>天津</dd>
+          <dt>创作媒介</dt><dd>生成艺术 / 数字影像 / 实时装置</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 作品画廊 -->
+  <section id="works">
+    <div class="sec-head">
+      <h2 class="sec-title">作品</h2>
+      <span class="sec-note">SELECTED WORKS · 06</span>
+    </div>
+    <div class="works-grid">
+      <article class="work reveal">
+        <figure><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=minimalist%20generative%20art%20print%2C%20thousands%20of%20thin%20black%20lines%20flowing%20like%20wind%20across%20off-white%20paper%2C%20subtle%20wave%20distortion%2C%20museum%20quality%20fine%20art%20print%2C%20low%20saturation&image_size=square" alt="风的算法" loading="lazy" /></figure>
+        <figcaption><span class="work-title">风的算法</span><span class="work-info">二〇二五 · 生成艺术</span></figcaption>
+      </article>
+      <article class="work reveal">
+        <figure><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=delicate%20particle%20system%20artwork%2C%20fine%20grey%20dots%20slowly%20forming%20a%20dissolving%20sphere%20on%20warm%20white%20background%2C%20minimalist%20digital%20art%2C%20quiet%20and%20precise%2C%20muted%20tones&image_size=square" alt="消散体" loading="lazy" /></figure>
+        <figcaption><span class="work-title">消散体</span><span class="work-info">二〇二五 · 生成影像</span></figcaption>
+      </article>
+      <article class="work reveal">
+        <figure><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=still%20frame%20from%20minimalist%20digital%20video%20art%2C%20soft%20gradient%20fog%20in%20pale%20blue%20and%20warm%20grey%2C%20atmospheric%20haze%2C%20empty%20quiet%20composition%2C%20very%20low%20saturation&image_size=square" alt="雾的帧率" loading="lazy" /></figure>
+        <figcaption><span class="work-title">雾的帧率</span><span class="work-info">二〇二四 · 数字影像</span></figcaption>
+      </article>
+      <article class="work reveal">
+        <figure><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=minimal%20light%20installation%20in%20an%20empty%20white%20gallery%2C%20a%20single%20thin%20beam%20of%20pale%20light%20crossing%20the%20room%20through%20soft%20haze%2C%20contemplative%20atmosphere%2C%20muted%20grey%20tones&image_size=square" alt="一束迟疑" loading="lazy" /></figure>
+        <figcaption><span class="work-title">一束迟疑</span><span class="work-info">二〇二四 · 空间装置</span></figcaption>
+      </article>
+      <article class="work reveal">
+        <figure><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=minimalist%20data%20visualization%20artwork%2C%20thin%20concentric%20circles%20and%20tiny%20evenly%20spaced%20dots%2C%20black%20ink%20on%20warm%20white%20paper%2C%20precision%20plotter%20drawing%20aesthetic%2C%20restrained&image_size=square" alt="数据圆规" loading="lazy" /></figure>
+        <figcaption><span class="work-title">数据圆规</span><span class="work-info">二〇二三 · 纸面绘图</span></figcaption>
+      </article>
+      <article class="work reveal">
+        <figure><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=abstract%20audio%20waveform%20landscape%2C%20pale%20grey%20layered%20ridges%20resembling%20distant%20mountains%20on%20white%20background%2C%20minimalist%20generative%20print%2C%20serene%20and%20empty%2C%20low%20saturation&image_size=square" alt="声音地貌" loading="lazy" /></figure>
+        <figcaption><span class="work-title">声音地貌</span><span class="work-info">二〇二三 · 生成艺术</span></figcaption>
+      </article>
+    </div>
+  </section>
+
+  <!-- 展览经历 -->
+  <section id="exhibitions">
+    <div class="sec-head">
+      <h2 class="sec-title">展览经历</h2>
+      <span class="sec-note">EXHIBITIONS</span>
+    </div>
+    <ul class="exh-list">
+      <li class="reveal"><span class="exh-year">2026</span><span class="exh-name">慢速的机器<small>个展</small></span><span class="exh-loc">上海 · 西岸</span></li>
+      <li class="reveal"><span class="exh-year">2025</span><span class="exh-name">生成的秩序<small>群展</small></span><span class="exh-loc">北京 · 七九八</span></li>
+      <li class="reveal"><span class="exh-year">2025</span><span class="exh-name">数字回声<small>群展</small></span><span class="exh-loc">深圳 · 海上世界</span></li>
+      <li class="reveal"><span class="exh-year">2024</span><span class="exh-name">雾的帧率<small>个展</small></span><span class="exh-loc">杭州 · 天目里</span></li>
+      <li class="reveal"><span class="exh-year">2024</span><span class="exh-name">安静的信号<small>双人展</small></span><span class="exh-loc">成都 · 麓湖</span></li>
+      <li class="reveal"><span class="exh-year">2023</span><span class="exh-name">青年科技艺术季<small>群展</small></span><span class="exh-loc">南京 · 金鹰美术馆</span></li>
+    </ul>
+  </section>
+
+  <!-- 页脚 / 联系 -->
+  <footer id="contact">
+    <div class="foot-inner">
+      <p class="foot-label">联系</p>
+      <a class="foot-mail" href="mailto:hello@liusong.art">hello@liusong.art</a>
+      <div class="foot-social">
+        <a href="#" target="_blank" rel="noopener">微博</a>
+        <a href="#" target="_blank" rel="noopener">小红书</a>
+        <a href="#" target="_blank" rel="noopener">哔哩哔哩</a>
+        <a href="#" target="_blank" rel="noopener">公众号</a>
+      </div>
+      <p class="foot-copy">© 二〇二六 刘松 · 版权所有</p>
+    </div>
+  </footer>
+
+  <script>
+    // 导航高亮
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const secs = ['about', 'works', 'exhibitions', 'contact'].map(id => document.getElementById(id));
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    secs.forEach(s => s && navObserver.observe(s));
+
+    // 入场动效
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
